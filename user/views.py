@@ -1,20 +1,21 @@
-from rest_framework import viewsets
+from main.lib.generic_api import GenericView
 from rest_framework.permissions import IsAuthenticated
 from .models import Fireman, IncidentCommander, Team
 from .serializers import FiremanSerializer, IncidentCommanderSerializer, TeamSerializer
 
-class TeamView(viewsets.ModelViewSet):
+class TeamView(GenericView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
     permission_classes = [IsAuthenticated]
     cache_key_prefix = "team"
 
-class FiremanView(viewsets.ModelViewSet):
+class FiremanView(GenericView):
     queryset = Fireman.objects.all()
     serializer_class = FiremanSerializer
     permission_classes = [IsAuthenticated]
     cache_key_prefix = "fireman"
-class IncidentCommanderView(viewsets.ModelViewSet):
+
+class IncidentCommanderView(GenericView):
     queryset = IncidentCommander.objects.all()
     serializer_class = IncidentCommanderSerializer
     permission_classes = [IsAuthenticated]
