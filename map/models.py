@@ -8,8 +8,14 @@ class FiremanCoordinates(models.Model):
     longitude = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return f"{self.fireman.name} - {self.timestamp}"
+    
 class FiretruckCoordinates(models.Model):
     truck = models.ForeignKey(Firetruck, on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.truck.name} - {self.timestamp}"
