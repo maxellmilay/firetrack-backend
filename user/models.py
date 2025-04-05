@@ -28,7 +28,7 @@ class Team(models.Model):
     
 class Fireman(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    team = models.ManyToManyField(Team, on_delete=models.CASCADE)
+    team = models.ManyToManyField(Team, related_name="firemen")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -37,7 +37,7 @@ class Fireman(models.Model):
 
 class IncidentCommander(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    team = models.ManyToManyField(Team, on_delete=models.CASCADE)
+    team = models.ManyToManyField(Team, related_name="incident_commanders")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
