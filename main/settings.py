@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # Local apps
     'user',
     'vehicle',
+    'map',
 ]
 
 # Site ID required for django-allauth
