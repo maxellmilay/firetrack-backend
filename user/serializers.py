@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.core.exceptions import ValidationError
-from .models import User
+from .models import User, Fireman, IncidentCommander, Team
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +43,24 @@ class CustomRegisterSerializer(RegisterSerializer):
     def custom_signup(self, request, user):
         # This method is called after the user is saved.
         pass # We don't need to do anything extra on signup
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = "__all__"
+
+class FiremanSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    team = TeamSerializer(many=True)
+
+    class Meta:
+        model = Fireman
+        fields = "__all__"
+
+class IncidentCommanderSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    team = TeamSerializer(many=True)
+
+    class Meta:
+        model = IncidentCommander
+        fields = "__all__"
