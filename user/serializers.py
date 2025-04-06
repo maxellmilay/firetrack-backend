@@ -2,6 +2,7 @@ from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.core.exceptions import ValidationError
 from .models import User, Fireman, IncidentCommander, Team
+from django.db import transaction
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,16 +52,73 @@ class TeamSerializer(serializers.ModelSerializer):
 
 class FiremanSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    team = TeamSerializer(many=True)
+    # Use PrimaryKeyRelatedField for input, keep TeamSerializer for output (read_only=True)
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), many=True, write_only=True)
+    team_details = TeamSerializer(many=True, read_only=True, source='team') # Separate field for read representation
 
     class Meta:
         model = Fireman
-        fields = "__all__"
+        # Adjust fields to include team_details for reading and exclude the write_only team field from default output
+        fields = ['id', 'user', 'team', 'team_details', 'created_at', 'updated_at']
+        read_only_fields = ['team_details'] # team_details is read-only
+
+    @transaction.atomic
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        team_data = validated_data.pop('team')
+
+        # Create the User instance
+        user_serializer = UserSerializer(data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        # Handle password hashing if password is provided
+        password = user_data.get('password')
+        user = user_serializer.save()
+        if password:
+            user.set_password(password)
+            user.save()
+
+
+        # Create the Fireman instance
+        fireman = Fireman.objects.create(user=user, **validated_data)
+
+        # Add teams to the Fireman instance
+        if team_data:
+            fireman.team.set(team_data)
+
+        return fireman
 
 class IncidentCommanderSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    team = TeamSerializer(many=True)
+    # Use PrimaryKeyRelatedField for input, keep TeamSerializer for output (read_only=True)
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), many=True, write_only=True)
+    team_details = TeamSerializer(many=True, read_only=True, source='team') # Separate field for read representation
 
     class Meta:
         model = IncidentCommander
-        fields = "__all__"
+        # Adjust fields to include team_details for reading and exclude the write_only team field from default output
+        fields = ['id', 'user', 'team', 'team_details', 'created_at', 'updated_at']
+        read_only_fields = ['team_details'] # team_details is read-only
+
+    @transaction.atomic
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        team_data = validated_data.pop('team')
+
+        # Create the User instance
+        user_serializer = UserSerializer(data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        # Handle password hashing if password is provided
+        password = user_data.get('password')
+        user = user_serializer.save()
+        if password:
+            user.set_password(password)
+            user.save()
+
+        # Create the IncidentCommander instance
+        incident_commander = IncidentCommander.objects.create(user=user, **validated_data)
+
+        # Add teams to the IncidentCommander instance
+        if team_data:
+            incident_commander.team.set(team_data)
+
+        return incident_commander
