@@ -1,13 +1,13 @@
 from django.urls import path, include
-from .views import TeamView, FiremanView, IncidentCommanderView
+from user.views import UserView, SquadView, FirestationView
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
     path("registration/", include("dj_rest_auth.registration.urls")),
-    path("teams/", TeamView.as_view({"get": "list", "post": "create"}), name="team-list"),
-    path("teams/<int:pk>/", TeamView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="team-detail"),
-    path("firemen/", FiremanView.as_view({"get": "list", "post": "create"}), name="fireman-list"),
-    path("firemen/<int:pk>/", FiremanView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="fireman-detail"),
-    path("incident-commanders/", IncidentCommanderView.as_view({"get": "list", "post": "create"}), name="incident-commander-list"),
-    path("incident-commanders/<int:pk>/", IncidentCommanderView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="incident-commander-detail"),
+    path("manage/", UserView.as_view({"get": "list", "post": "create"}), name="user-list"),
+    path("manage/<int:pk>/", UserView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="user-detail"),
+    path("squads/", SquadView.as_view({"get": "list", "post": "create"}), name="squad-list"),
+    path("squads/<int:pk>/", SquadView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="squad-detail"),
+    path("firestations/", FirestationView.as_view({"get": "list", "post": "create"}), name="firestation-list"),
+    path("firestations/<int:pk>/", FirestationView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="firestation-detail"),
 ]

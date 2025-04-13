@@ -1,18 +1,8 @@
 from rest_framework import serializers
-from .models import FiremanCoordinates, FiretruckCoordinates
-from user.serializers import FiremanSerializer
-from vehicle.serializers import FiretruckSerializer
+from map.models import Coordinates
 
-class FiremanCoordinatesSerializer(serializers.ModelSerializer):
-    fireman = FiremanSerializer()
-    
+class CoordinatesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FiremanCoordinates
+        model = Coordinates
         fields = '__all__'
 
-class FiretruckCoordinatesSerializer(serializers.ModelSerializer):
-    truck = FiretruckSerializer()
-    
-    class Meta:
-        model = FiretruckCoordinates
-        fields = '__all__'

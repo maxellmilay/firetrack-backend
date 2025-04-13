@@ -1,22 +1,18 @@
 from main.lib.generic_api import GenericView
 from rest_framework.permissions import IsAuthenticated
-from .models import Fireman, IncidentCommander, Team
-from .serializers import FiremanSerializer, IncidentCommanderSerializer, TeamSerializer
+from .models import User, Squad, Firestation
+from .serializers import UserSerializer, SquadSerializer, FirestationSerializer
 
-class TeamView(GenericView):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
+class UserView(GenericView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
-    cache_key_prefix = "team"
 
-class FiremanView(GenericView):
-    queryset = Fireman.objects.all()
-    serializer_class = FiremanSerializer
+class SquadView(GenericView):
+    queryset = Squad.objects.all()
+    serializer_class = SquadSerializer
     permission_classes = [IsAuthenticated]
-    cache_key_prefix = "fireman"
-
-class IncidentCommanderView(GenericView):
-    queryset = IncidentCommander.objects.all()
-    serializer_class = IncidentCommanderSerializer
-    permission_classes = [IsAuthenticated]
-    cache_key_prefix = "incident_commander"
+    
+class FirestationView(GenericView):
+    queryset = Firestation.objects.all()
+    serializer_class = FirestationSerializer

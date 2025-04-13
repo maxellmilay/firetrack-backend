@@ -1,36 +1,34 @@
 from django.db import models
-from vehicle.models import Firetruck
-from user.models import Fireman
+from user.models import User
 
 class Incident(models.Model):
+    class Status(models.TextChoices):
+        IN_PROGRESS = 'IN PROGRESS'
+        ENDED = 'ENDED'
+
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=255)
-    remarks = models.TextField()
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    response_time = models.TimeField(null=True, blank=True)
+    status = models.CharField(max_length=255, choices=Status.choices)
+    remarks = models.TextField(null=True, blank=True)
+    location_name = models.CharField(max_length=255)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_ended = models.DateTimeField(null=True, blank=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
 
-class TravelOrder(models.Model):
-    incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
-    firetruck = models.ForeignKey(Firetruck, on_delete=models.CASCADE)
-    fireman = models.ManyToManyField(Fireman, related_name="travel_orders")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.incident.name} - {self.firetruck.name}"
-
 class IncidentReport(models.Model):
-    title = models.CharField(max_length=255)
     incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
-    report = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    content = models.TextField(null=True, blank=True)
+    file = models.URLField(max_length=2000, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
     def __str__(self):
-        return f"{self.title} - {self.incident.name}"
+        return self.title
