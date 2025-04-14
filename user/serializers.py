@@ -9,9 +9,10 @@ class LoginSerializer(RestAuthLoginSerializer):
 class UserSerializer(serializers.ModelSerializer):
     last_login = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     date_joined = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
     class Meta:
         model = User
-        exclude = ['password', 'groups', 'user_permissions']
+        exclude = ['password', 'groups', 'user_permissions', 'first_name', 'last_name']
 
 class FirestationSerializer(serializers.ModelSerializer):
     class Meta:
