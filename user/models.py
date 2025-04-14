@@ -20,6 +20,7 @@ class User(AbstractUser):
         FIREFIREFIGHTER = 'FIREFIREFIGHTER'
         TRUCK = 'TRUCK'
 
+    username = models.CharField(max_length=255, unique=True)
     avatar_url = models.URLField(max_length=2000, blank=True, null=True)
     role = models.CharField(max_length=255, choices=Role.choices)
     tracker_id = models.CharField(max_length=255, blank=True, null=True)
