@@ -13,13 +13,17 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         exclude = ['password', 'groups', 'user_permissions']
 
-class SquadSerializer(serializers.ModelSerializer):
-    members = UserSerializer(many=True)
-    class Meta:
-        model = Squad
-        fields = "__all__"
-
 class FirestationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Firestation
+        fields = "__all__"
+
+class SquadSerializer(serializers.ModelSerializer):
+    members = UserSerializer(many=True)
+    firestation = FirestationSerializer(read_only=True)
+    firestation_id = serializers.PrimaryKeyRelatedField(queryset=Firestation.objects.all(), source='firestation')
+    leader = UserSerializer(read_only=True)
+    leader_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='leader')
+    class Meta:
+        model = Squad
         fields = "__all__"
