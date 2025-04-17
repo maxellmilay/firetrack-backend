@@ -201,14 +201,14 @@ class GenericView(viewsets.ViewSet):
                 parsed_value = (
                     parse_list_parameter(value)
                     if "," in value
-                    else json.loads(value.strip())
+                    else value.strip()
                 )
                 excludes[key[8:]] = parsed_value
             else:
                 parsed_value = (
                     parse_list_parameter(value)
                     if "," in value
-                    else json.loads(value.strip())
+                    else value.strip()
                 )
                 if parsed_value is not None and (
                     key in self.allowed_filter_fields
