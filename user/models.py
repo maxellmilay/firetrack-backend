@@ -22,7 +22,7 @@ class User(AbstractUser):
     
     class Role(models.TextChoices):
         ADMIN = 'ADMIN'
-        FIREFIREFIGHTER = 'FIREFIREFIGHTER'
+        FIREFIGHTER = 'FIREFIGHTER'
         TRUCK = 'TRUCK'
 
     username = models.CharField(max_length=255, unique=True)
