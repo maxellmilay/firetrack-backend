@@ -2,9 +2,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Squad(models.Model):
+    class Status(models.TextChoices):
+        AVAILABLE = 'AVAILABLE'
+        UNAVAILABLE = 'UNAVAILABLE'
+        
     name = models.CharField(max_length=255)
     leader = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True, related_name='led_squads')
     description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=255, choices=Status.choices, default=Status.AVAILABLE)
     firestation = models.ForeignKey('Firestation', on_delete=models.CASCADE, related_name='squads')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -21,6 +26,7 @@ class User(AbstractUser):
         TRUCK = 'TRUCK'
 
     username = models.CharField(max_length=255, unique=True)
+    display_name = models.CharField(max_length=255, blank=True, null=True)
     avatar_url = models.URLField(max_length=2000, blank=True, null=True)
     role = models.CharField(max_length=255, choices=Role.choices)
     tracker_id = models.CharField(max_length=255, blank=True, null=True)
