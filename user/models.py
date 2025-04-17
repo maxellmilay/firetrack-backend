@@ -28,7 +28,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     display_name = models.CharField(max_length=255, blank=True, null=True)
     avatar_url = models.URLField(max_length=2000, blank=True, null=True)
-    role = models.CharField(max_length=255, choices=Role.choices)
+    role = models.CharField(max_length=255, choices=Role.choices, default=Role.ADMIN)
     tracker_id = models.CharField(max_length=255, blank=True, null=True)
     squad = models.ForeignKey(Squad, on_delete=models.CASCADE, blank=True, null=True, related_name='members')
 
