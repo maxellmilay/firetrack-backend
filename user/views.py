@@ -28,7 +28,6 @@ class UserView(GenericView):
 class SquadView(GenericView):
     queryset = Squad.objects.all()
     serializer_class = SquadSerializer
-    permission_classes = [IsAuthenticated]
     
     def filter_queryset(self, filters, excludes):
         # Get base queryset with applied filters
@@ -45,7 +44,6 @@ class SquadView(GenericView):
 class FirestationView(GenericView):
     queryset = Firestation.objects.all()
     serializer_class = FirestationSerializer
-    permission_classes = [IsAuthenticated]
     
     def filter_queryset(self, filters, excludes):
         # Get base queryset with applied filters
