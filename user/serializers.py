@@ -42,6 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
     squad_ids = serializers.PrimaryKeyRelatedField(queryset=Squad.objects.all(), many=True, source='squad', write_only=True, required=False)
     squad = serializers.SerializerMethodField(read_only=True)
     status = serializers.CharField(read_only=True)
+    firestations = serializers.SerializerMethodField(read_only=True)
+    
     
     def get_squad(self, obj):
         squads = obj.squad.all()
@@ -51,6 +53,16 @@ class UserSerializer(serializers.ModelSerializer):
             'name': squad.name,
             'status': squad.status
         } for squad in squads]
+    
+    def get_firestations(self, obj):
+        firestations = obj.firestations
+        return [{
+            'id': fs.id,
+            'name': fs.name,
+            'address': fs.address,
+            'latitude': fs.latitude,
+            'longitude': fs.longitude
+        } for fs in firestations]
         
     class Meta:
         model = User
