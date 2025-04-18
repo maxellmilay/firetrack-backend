@@ -42,6 +42,22 @@ class User(AbstractUser):
         """
         return list(Firestation.objects.filter(squads__in=self.squad.all()).distinct())
 
+    @property
+    def status(self):
+        """
+        Returns 'AVAILABLE' if any of the user's squads are available,
+        otherwise returns 'UNAVAILABLE'.
+        """
+        user_squads = self.squad.all()
+        if not user_squads:
+            return Squad.Status.UNAVAILABLE
+            
+        for squad in user_squads:
+            if squad.status == Squad.Status.AVAILABLE:
+                return Squad.Status.AVAILABLE
+                
+        return Squad.Status.UNAVAILABLE
+
 class Firestation(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)

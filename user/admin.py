@@ -18,7 +18,37 @@ class CustomUserAdmin(DefaultUserAdmin):
     
     filter_horizontal = ('squad', 'groups', 'user_permissions')
 
+class SquadAdmin(admin.ModelAdmin):
+    list_display = ('name', 'status', 'firestation', 'leader', 'get_members_count')
+    list_filter = ('status', 'firestation')
+    search_fields = ('name', 'description')
+    
+    def get_members_count(self, obj):
+        return obj.members.count()
+    get_members_count.short_description = 'Members Count'
+    
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description', 'status', 'firestation', 'leader')
+        }),
+        ('Members', {
+            'fields': ('get_members',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        if obj:  # Only for existing objects
+            return readonly_fields + ('get_members',)
+        return readonly_fields
+    
+    def get_members(self, obj):
+        members = obj.members.all()
+        return ", ".join([user.username for user in members])
+    get_members.short_description = 'Members'
+
 # Register the models
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Squad)
+admin.site.register(Squad, SquadAdmin)
 admin.site.register(Firestation)
