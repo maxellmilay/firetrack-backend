@@ -30,10 +30,17 @@ class User(AbstractUser):
     avatar_url = models.URLField(max_length=2000, blank=True, null=True)
     role = models.CharField(max_length=255, choices=Role.choices, default=Role.ADMIN)
     tracker_id = models.CharField(max_length=255, blank=True, null=True)
-    squad = models.ForeignKey(Squad, on_delete=models.CASCADE, blank=True, null=True, related_name='members')
+    squad = models.ManyToManyField(Squad, blank=True, related_name='members')
 
     def __str__(self):
         return self.email
+
+    @property
+    def firestations(self):
+        """
+        Returns a list of unique firestations associated with the user's squads.
+        """
+        return list(Firestation.objects.filter(squads__in=self.squad.all()).distinct())
 
 class Firestation(models.Model):
     name = models.CharField(max_length=255)

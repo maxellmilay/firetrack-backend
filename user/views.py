@@ -11,7 +11,6 @@ class UserView(GenericView):
 class SquadView(GenericView):
     queryset = Squad.objects.all()
     serializer_class = SquadSerializer
-    permission_classes = [IsAuthenticated]
     
 class FirestationView(GenericView):
     queryset = Firestation.objects.all()

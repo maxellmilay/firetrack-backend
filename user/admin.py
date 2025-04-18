@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 
 class CustomUserAdmin(DefaultUserAdmin):
     # Add custom fields to the list display
-    list_display = ('username', 'email', 'first_name', 'last_name', 'display_name', 'role', 'tracker_id', 'squad')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'display_name', 'role', 'tracker_id')
     
     # Add custom fields to the fieldsets
     fieldsets = DefaultUserAdmin.fieldsets + (
@@ -15,6 +15,8 @@ class CustomUserAdmin(DefaultUserAdmin):
     add_fieldsets = DefaultUserAdmin.add_fieldsets + (
         ('Custom Fields', {'fields': ('display_name', 'avatar_url', 'role', 'tracker_id', 'squad')}),
     )
+    
+    filter_horizontal = ('squad', 'groups', 'user_permissions')
 
 # Register the models
 admin.site.register(User, CustomUserAdmin)
