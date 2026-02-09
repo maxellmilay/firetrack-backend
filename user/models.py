@@ -27,7 +27,7 @@ class User(AbstractUser):
 
     username = models.CharField(max_length=255, unique=True)
     display_name = models.CharField(max_length=255, blank=True, null=True)
-    avatar_url = models.URLField(max_length=2000, blank=True, null=True)
+    avatar_url = models.URLField(max_length=20000, blank=True, null=True)
     role = models.CharField(max_length=255, choices=Role.choices, default=Role.ADMIN)
     tracker_id = models.CharField(max_length=255, blank=True, null=True)
     squad = models.ManyToManyField(Squad, blank=True, related_name='members')

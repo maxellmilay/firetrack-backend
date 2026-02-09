@@ -56,3 +56,9 @@ class FirestationView(GenericView):
         queryset = queryset.filter(id__in=[fs.id for fs in user_firestations])
             
         return queryset
+
+
+class AllFirestationsView(GenericView):
+    """Returns all fire stations without user-based filtering (for map display)."""
+    queryset = Firestation.objects.all()
+    serializer_class = FirestationSerializer

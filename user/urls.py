@@ -1,5 +1,5 @@
 from django.urls import path, include
-from user.views import UserView, SquadView, FirestationView
+from user.views import UserView, SquadView, FirestationView, AllFirestationsView
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
@@ -9,5 +9,6 @@ urlpatterns = [
     path("squads/", SquadView.as_view({"get": "list", "post": "create"}), name="squad-list"),
     path("squads/<int:pk>/", SquadView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="squad-detail"),
     path("firestations/", FirestationView.as_view({"get": "list", "post": "create"}), name="firestation-list"),
+    path("firestations/all/", AllFirestationsView.as_view({"get": "list"}), name="firestation-all"),
     path("firestations/<int:pk>/", FirestationView.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}), name="firestation-detail"),
 ]

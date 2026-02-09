@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import User
+from user.models import User, Squad
 
 class Incident(models.Model):
     class Status(models.TextChoices):
@@ -14,6 +14,7 @@ class Incident(models.Model):
     location_name = models.CharField(max_length=255)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    squads = models.ManyToManyField(Squad, related_name='incidents', blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_ended = models.DateTimeField(null=True, blank=True)
     date_updated = models.DateTimeField(auto_now=True)

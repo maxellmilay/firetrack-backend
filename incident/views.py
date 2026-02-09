@@ -23,6 +23,13 @@ class IncidentView(GenericView):
             
         return queryset
 
+class AllIncidentsView(GenericView):
+    """Returns all incidents without user-based filtering (for map display)."""
+    queryset = Incident.objects.all()
+    serializer_class = IncidentSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class IncidentReportView(GenericView):
     queryset = IncidentReport.objects.all()
     serializer_class = IncidentReportSerializer
